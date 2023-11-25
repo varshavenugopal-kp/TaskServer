@@ -114,7 +114,7 @@ const editTask = async (req, res) => {
               }
             }
           );
-          io.emit('taskAdded', { task: result })
+          io.emit('taskEdited', { id, task, description, date });
         res.status(200).json({ message: "success" ,data:result});
     } catch (err) {
         console.log(err);
