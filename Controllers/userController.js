@@ -93,7 +93,7 @@ const getTask= async(req,res)=>{
               }
             }
           ])
-          console.log(result,"iiiiiiiiyyyyyyyyyyyyyy");
+          console.log(result);
           res.status(200).json({ message: "success", data: result });
     }catch(err){
         console.log(err);
@@ -147,7 +147,7 @@ const getSingle = async (req, res) => {
 
 const deleteTask = async (req, res) => {
     try {
-        console.log(req.body,"bbbbbbbbbbbbbbbbbbbbbbbb");
+        console.log(req.body);
         const { id } = req.body
         const result = await taskSchema.deleteOne({ _id: id }); 
 
@@ -159,7 +159,7 @@ const deleteTask = async (req, res) => {
 
 const editStatus = async (req, res) => {
     try {
-        console.log('req.bodyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy=',req.body);
+        console.log(req.body);
         const {id, userid } = req.body;
         const result = await userSchema.updateOne({_id:userid},{$push:{tasks:id}})
         console.log(result);
