@@ -35,7 +35,7 @@ const io = new Server(server, {
       methods: ['GET', 'POST', 'PUT'],
     },
   });
-console.log(io,"lllllll");
+console.log(io);
 
 io.on('connection', (socket) => {
     console.log('A user connected');

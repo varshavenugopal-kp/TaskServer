@@ -7,7 +7,7 @@ import { io } from "../index.js";
 
 const signup=async(req,res)=>{
     const { username, email, password } = req.body
-    console.log(req.body,"llllllllllllllllllllllllllllll");
+    console.log(req.body);
     try{
 
         const user = await userSchema.findOne({ email: email })
@@ -171,7 +171,7 @@ const editStatus = async (req, res) => {
 
 const uncheck=async(req,res)=>{
     try {
-        console.log('req.bodyzzzzzzzzzzzzzzzzzzzzzzzz=',req.body);
+        console.log('req.bodyz',req.body);
         const {id, userid } = req.body;
         const result = await userSchema.updateOne({_id:userid},{$pull:{tasks:new mongoose.Types.ObjectId(id)}})
         console.log(result);
