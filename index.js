@@ -15,7 +15,7 @@ app.use(cors({
 }))
 app.use(errorHandler);
 
-const server=app.listen(8000,()=>{
+const server=app.listen(9000,()=>{
     console.log("connected");
 })
 mongoose.connect(process.env.db_url, {
