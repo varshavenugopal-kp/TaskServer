@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 import mongoose from 'mongoose'
 import userRouter from './Routes/userRouter.js'
 import { Server } from "socket.io"
+import errorHandler from './Middlewares/Errorhandle.js'
 dotenv.config()
 const app=express()
 app.use(express.json());
@@ -12,6 +13,7 @@ app.use(cors({
     origin:[process.env.CLIENT],
     methods:["GET","POST"]
 }))
+app.use(errorHandler);
 
 const server=app.listen(8000,()=>{
     console.log("connected");

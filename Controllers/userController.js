@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { taskSchema } from "../Models/taskModel.js";
 import { userSchema } from "../Models/userModel.js";
 import generateToken from '../Services/generateToken.js'
@@ -100,6 +101,18 @@ const getTask= async(req,res)=>{
    
 }  
 
+const getUser=async(req,res)=>{
+    try{
+        const id=req.params.userid
+        const user = await userSchema.findOne({ _id:id })
+        console.log(user,"bbbbbbbbbbbbbbbb");
+        res.status(200).json({ message: "success" ,data:user});
+    
+    }catch(err){
+        console.log(err);
+    }
+}
+
 const editTask = async (req, res) => {
     try {
         console.log('req.body=',req.body);
@@ -146,18 +159,55 @@ const deleteTask = async (req, res) => {
 
 const editStatus = async (req, res) => {
     try {
-        console.log('req.body=',req.body);
+        console.log('req.bodyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy=',req.body);
         const {id, userid } = req.body;
-        const result = await taskSchema.updateOne(
-            { _id: id }, // Assuming id is the MongoDB ObjectId
-            { 
-              $set: {
-                status:true
-              }
-            }
-          );
+        const result = await userSchema.updateOne({_id:userid},{$push:{tasks:id}})
+        console.log(result);
         res.status(200).json({ message: "success" ,data:result});
     } catch (err) {
+        console.log(err);
+    }
+}
+
+const uncheck=async(req,res)=>{
+    try {
+        console.log('req.bodyzzzzzzzzzzzzzzzzzzzzzzzz=',req.body);
+        const {id, userid } = req.body;
+        const result = await userSchema.updateOne({_id:userid},{$pull:{tasks:new mongoose.Types.ObjectId(id)}})
+        console.log(result);
+        res.status(200).json({ message: "success" ,data:result});
+    } catch (err) {
+        console.log(err);
+    }
+}
+const tasknum=async(req,res)=>{
+    try{
+        const userid=req.params.userid
+        const completed=await userSchema.aggregate([
+            {
+              $match: {
+                _id:new mongoose.Types.ObjectId(userid) // Replace with the actual ObjectId of the user
+              }
+            },
+            {
+              $project: {
+                numberOfTasks: {
+                  $cond: {
+                    if: { $isArray: '$tasks' }, // Check if 'tasks' is an array
+                    then: { $size: '$tasks' },   // If it's an array, return its size
+                    else: 0                      // If it's not an array (or doesn't exist), return 0
+                  }
+                }
+              }
+            }
+          ]);
+        console.log(completed,"kkkkkkkkkkkkk");
+        const comtask=completed.length
+        const result=await taskSchema.find()
+        const total=result.length
+        console.log(total);
+        res.status(200).json({ message: "success" ,data:total, numberOfTasks: completed[0]?.numberOfTasks || 0});
+    }catch(err){
         console.log(err);
     }
 }
@@ -168,5 +218,9 @@ export default {
    getTask,
    getSingle,
    editTask,
-   deleteTask
+   deleteTask,
+   editStatus,
+   uncheck,
+   tasknum,
+   getUser
 };

@@ -13,6 +13,10 @@ const users=new mongoose.Schema({
     password:{
         type:String,
         required:true
+    },
+    tasks:{
+        type:Array,
+       
     }
 })
 export const userSchema = mongoose.model("users",users)
