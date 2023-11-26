@@ -11,7 +11,7 @@ const signup=async(req,res)=>{
     try{
 
         const user = await userSchema.findOne({ email: email })
-        console.log("my user is ", user);
+        console.log(user);
 
         if(!user){
             const createdUser = await userSchema.create({username,email,password});
