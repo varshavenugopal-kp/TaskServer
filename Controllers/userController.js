@@ -16,7 +16,7 @@ const signup=async(req,res)=>{
         if(!user){
             const createdUser = await userSchema.create({username,email,password});
         if (createdUser) {
-            console.log("varsahaaaaa");
+           
             res.status(201).json({ message: "successful", data: createdUser });
 
         } else {
@@ -30,8 +30,7 @@ const signup=async(req,res)=>{
        
 
     }catch(err){
-        console.log("this is my errorr .................", err);
-
+       
 
         res.status(503).json({ message: "internal server error" })
     }
@@ -57,7 +56,7 @@ const loginUser = async (req,res) => {
 const addTask = async (req, res) => {
     try {
         const { task,description,date,userid} = req.body;
-        console.log("ji", req.body);
+       
         const result = await taskSchema.create({
            task,
            description,
@@ -65,7 +64,7 @@ const addTask = async (req, res) => {
            userid
         });
        io.emit('taskAdded', { task: result })
-        console.log("resulteeeey",result);
+        
         res.status(200).json({ message: "success", data: result });
     } catch (error) {
         console.log(error);
@@ -105,7 +104,7 @@ const getUser=async(req,res)=>{
     try{
         const id=req.params.userid
         const user = await userSchema.findOne({ _id:id })
-        console.log(user,"bbbbbbbbbbbbbbbb");
+       
         res.status(200).json({ message: "success" ,data:user});
     
     }catch(err){
@@ -115,7 +114,7 @@ const getUser=async(req,res)=>{
 
 const editTask = async (req, res) => {
     try {
-        console.log('req.body=',req.body);
+       
         const {id, userid, task, description, date } = req.body;
         const result = await taskSchema.updateOne(
             { _id: id }, // Assuming id is the MongoDB ObjectId
@@ -137,7 +136,7 @@ const editTask = async (req, res) => {
 const getSingle = async (req, res) => {
     try {
         const id = req.params.taskId
-       console.log(id,"jjjjjjjjjjjjjjjjjj");
+    
         const result = await taskSchema.findOne({ _id: id })
         res.status(200).json({ message: "success", data: result });
     } catch (err) {
@@ -171,7 +170,7 @@ const editStatus = async (req, res) => {
 
 const uncheck=async(req,res)=>{
     try {
-        console.log('req.bodyz',req.body);
+       
         const {id, userid } = req.body;
         const result = await userSchema.updateOne({_id:userid},{$pull:{tasks:new mongoose.Types.ObjectId(id)}})
         console.log(result);
@@ -201,7 +200,7 @@ const tasknum=async(req,res)=>{
               }
             }
           ]);
-        console.log(completed,"kkkkkkkkkkkkk");
+       
         const comtask=completed.length
         const result=await taskSchema.find()
         const total=result.length
